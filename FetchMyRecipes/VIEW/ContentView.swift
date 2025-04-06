@@ -8,17 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var recipesService: RecipesService
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationView {
+            if let recipes = recipesService.allRecipes {
+                List(recipes) { recipe in
+                    Text(recipe.name)
+                }
+            }
         }
-        .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView(recipesService: RecipesService())
 }

@@ -18,13 +18,81 @@ final class FetchMyRecipesTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testRecipeDecodingFromMockJSON() throws {
+        let mockJSON = """
+        {
+            "recipes": [
+                {
+                    "cuisine": "Thai",
+                    "name": "Pad Thai",
+                    "photo_url_large": "https://example.com/padthai.jpg",
+                    "photo_url_small": "https://example.com/padthai_small.jpg",
+                    "uuid": "EAAF48DC-A3F6-4D97-92ED-B878B32EB508",
+                    "source_url": "https://example.com",
+                    "youtube_url": "https://youtube.com/example"
+                }
+            ]
+        }
+        """.data(using: .utf8)!
+        
+        let decoded = try JSONDecoder().decode(RecipesResponse.self, from: mockJSON)
+        
+        guard let recipes = decoded.recipes else {
+            XCTFail("Expected recipes array, but got nil.")
+            return
+        }
+        
+        XCTAssertEqual(recipes.count, 1)
+        XCTAssertEqual(recipes[0].name, "Pad Thai")
+        XCTAssertEqual(recipes[0].cuisine, "Thai")
     }
+    
+    func testDecodingFailsWithMailformedJSON() {
+        let malformedJSON = """
+            {
+                "recipes": [
+                    {
+                        "cuisine": "Thai",
+                        "name": 123,
+                        "photo_url_large": "https://example.com/padthai.jpg",
+                        "photo_url_small": "https://example.com/padthai_small.jpg",
+                        "uuid": "EAAF48DC-A3F6-4D97-92ED-B878B32EB508",
+                        "source_url": "https://example.com",
+                        "youtube_url": "https://youtube.com/example"
+                    }
+                ]
+            }
+            """.data(using: .utf8)!
+        
+        XCTAssertThrowsError(
+            try JSONDecoder().decode(RecipesResponse.self, from: malformedJSON), "Decoding should fail when name is not String"
+        )
+    }
+    
+    func testDecodingEmptyRecipesJSON() throws {
+        let emptyJSON = """
+        {
+            "recipes": []
+        }
+        """.data(using: .utf8)!
+
+        let decoded = try JSONDecoder().decode(RecipesResponse.self, from: emptyJSON)
+
+        XCTAssertNotNil(decoded.recipes, "Recipes array should not be nil")
+        XCTAssertEqual(decoded.recipes?.count, 0, "Recipes array should be empty")
+    }
+    
+    func testDecodingYieldsNilWhenRecipesKeyIsMissing() throws {
+        let missingKeyJSON = """
+        {
+            "status": "ok"
+        }
+        """.data(using: .utf8)!
+
+        let decoded = try JSONDecoder().decode(RecipesResponse.self, from: missingKeyJSON)
+        XCTAssertNil(decoded.recipes, "Expected recipes to be nil when key is missing")
+    }
+
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.

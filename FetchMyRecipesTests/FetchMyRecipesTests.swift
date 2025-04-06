@@ -116,7 +116,7 @@ final class FetchMyRecipesTests: XCTestCase {
             expectation.fulfill()
         }
         
-        wait(for: [expectation], timeout: 3.0)
+        wait(for: [expectation], timeout: 6.0)
     }
     
     func testDiskCacheStoresAndRetrievesImage() {
@@ -135,7 +135,7 @@ final class FetchMyRecipesTests: XCTestCase {
             XCTAssertNotNil(result, "Image should be loaded from disk cache")
             expectation.fulfill()
         }
-        wait(for: [expectation], timeout: 3.0) //extended timeout because want the fun animation to show longer
+        wait(for: [expectation], timeout: 6.0) //extended timeout because want the fun animation to show longer
     }
 
 

@@ -78,11 +78,6 @@ class RecipesService: ObservableObject {
                         DispatchQueue.main.async {
                             self.allRecipes = result.recipes ?? []
                             self.filteredRecipes = nil
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                self.isLoading = false
-                            }
-                            
                         }
                     } catch {
                         print("JSON decoding error:", error)

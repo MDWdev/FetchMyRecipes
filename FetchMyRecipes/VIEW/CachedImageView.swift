@@ -14,8 +14,6 @@ struct CachedImageView: View {
     init(url: String, placeholder: Image = Image(systemName: "photo")) {
         _loader = StateObject(wrappedValue: ImageLoader(urlString: url))
         self.placeholder = placeholder
-        
-        print("🖼️ CachedImageView for URL: \(url)")
     }
     
     var body: some View {

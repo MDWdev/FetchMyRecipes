@@ -13,6 +13,7 @@
 		960A2E352DA2FC7200B94725 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E342DA2FC7200B94725 /* CachedImageView.swift */; };
 		960A2E392DA320F700B94725 /* CuisineRecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E382DA320F700B94725 /* CuisineRecipesView.swift */; };
 		960A2E3B2DA32CB000B94725 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E3A2DA32CB000B94725 /* LoadingOverlay.swift */; };
+		960A2E3D2DA331F300B94725 /* CuisineTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E3C2DA331F300B94725 /* CuisineTile.swift */; };
 		9632275E2DA0CBA600C8E618 /* FetchMyRecipesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9632275D2DA0CBA600C8E618 /* FetchMyRecipesApp.swift */; };
 		963227602DA0CBA700C8E618 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9632275F2DA0CBA700C8E618 /* ContentView.swift */; };
 		963227622DA0CBA900C8E618 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 963227612DA0CBA900C8E618 /* Assets.xcassets */; };
@@ -50,6 +51,7 @@
 		960A2E342DA2FC7200B94725 /* CachedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
 		960A2E382DA320F700B94725 /* CuisineRecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuisineRecipesView.swift; sourceTree = "<group>"; };
 		960A2E3A2DA32CB000B94725 /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
+		960A2E3C2DA331F300B94725 /* CuisineTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuisineTile.swift; sourceTree = "<group>"; };
 		9632275A2DA0CBA600C8E618 /* FetchMyRecipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FetchMyRecipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9632275D2DA0CBA600C8E618 /* FetchMyRecipesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMyRecipesApp.swift; sourceTree = "<group>"; };
 		9632275F2DA0CBA700C8E618 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -159,6 +161,7 @@
 				960A2E342DA2FC7200B94725 /* CachedImageView.swift */,
 				960A2E382DA320F700B94725 /* CuisineRecipesView.swift */,
 				960A2E3A2DA32CB000B94725 /* LoadingOverlay.swift */,
+				960A2E3C2DA331F300B94725 /* CuisineTile.swift */,
 			);
 			path = VIEW;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				963227602DA0CBA700C8E618 /* ContentView.swift in Sources */,
 				960A2E2F2DA0DC0600B94725 /* Dynamic.swift in Sources */,
 				960A2E332DA2FADF00B94725 /* ImageLoader.swift in Sources */,
+				960A2E3D2DA331F300B94725 /* CuisineTile.swift in Sources */,
 				960A2E312DA2F23400B94725 /* RecipeCard.swift in Sources */,
 				9632275E2DA0CBA600C8E618 /* FetchMyRecipesApp.swift in Sources */,
 				9632278C2DA0CCFF00C8E618 /* RecipesService.swift in Sources */,

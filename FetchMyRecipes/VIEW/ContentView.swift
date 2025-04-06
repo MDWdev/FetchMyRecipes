@@ -8,17 +8,23 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var recipesService: RecipesService
+    @EnvironmentObject var recipesService: RecipesService
     @State private var selectedCuisine: CuisineCategory?
+    
 
     var body: some View {
-        let _ = print("isLoading: \(recipesService.isLoading)")
         
         ZStack {
+            let _ = print("is loading?: \(recipesService.isLoading)")
             NavigationView {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                        ForEach(recipesService.cuisines) { cuisine in
+                        
+                        
+                        
+                        ForEach(Array(recipesService.cuisines.enumerated()), id: \.element.id) { index, cuisine in
+                            let isLast = index == recipesService.cuisines.count - 1
+                            
                             NavigationLink(
                                 destination: CuisineRecipesView(
                                     title: cuisine.name,
@@ -27,51 +33,23 @@ struct ContentView: View {
                                         : recipesService.allRecipes.filter { $0.cuisine == cuisine.name }
                                 )
                             ) {
-                                ZStack {
-                                    // Background Image
-                                    if let imageUrl = cuisine.previewImageURL {
-                                        CachedImageView(url: imageUrl)
-                                            .scaledToFill()
-                                            .frame(height: 160)
-                                            .clipped()
-                                    } else {
-                                        Rectangle()
-                                            .fill(Color.purple.opacity(0.6))
-                                            .frame(height: 160)
-                                    }
-
-                                    // Dark overlay
-                                    Rectangle()
-                                        .fill(Color.black.opacity(0.5))
-                                        .frame(height: 160)
-
-                                    // Text overlay
-                                    VStack {
-                                        Text(cuisine.name == "All Recipes" ? "ALL" : cuisine.name)
-                                            .font(.title2.bold())
-                                            .foregroundColor(.white)
-                                            .multilineTextAlignment(.center)
-                                            .padding(.top, 10)
-                                        
-                                        Text("\(cuisine.count)")
-                                            .font(.caption.bold())
-                                            .foregroundColor(.white)
-                                            .frame(width: 32, height: 32)
-                                            .background(Circle().fill(Color.white.opacity(0.2)))
-                                            .overlay(
-                                                Circle().stroke(Color.white.opacity(0.6), lineWidth: 1)
-                                            )
-                                            .padding(.top, 8)
-                                    }
-                                }
-                                .clipShape(RoundedRectangle(cornerRadius: 12))
-                                .shadow(radius: 4)
-                                .padding(.horizontal, 4)
+                                CuisineTile(
+                                    cuisine: cuisine
+                                )
                             }
                         }
+                        
+                        
+                        
                     }
                     .padding()
                 }
+                .onAppear {
+                    DispatchQueue.main.async {
+                        recipesService.isLoading = false
+                    }
+                }
+                
                 .navigationTitle("Browse Cuisines")
             }
             
@@ -84,5 +62,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView(recipesService: RecipesService())
+    ContentView()
+        .environmentObject(RecipesService())
 }

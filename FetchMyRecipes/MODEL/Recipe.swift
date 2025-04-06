@@ -25,8 +25,19 @@ struct Recipe: Codable, Identifiable {
         case sourceUrl = "source_url"
         case youtubeUrl = "youtube_url"
     }
+    
+#if DEBUG
+static let example = Recipe(cuisine: "Italian", name: "Pizza", id: UUID())
+#endif
 }
 
 struct RecipesResponse: Codable {
     var recipes: [Recipe]?
+}
+
+struct CuisineCategory: Identifiable {
+    let name: String
+    let count: Int
+    let previewImageURL: String?
+    var id: String { name }
 }

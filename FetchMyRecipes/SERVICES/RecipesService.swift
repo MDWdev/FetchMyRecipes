@@ -6,36 +6,56 @@
 //
 
 import Foundation
-
-
+import Combine
 
 class RecipesService: ObservableObject {
     let recipeDomain = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes.json"
     let malformedRecipes = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-malformed.json"
     let emptyRecipes = "https://d3jbb8n5wk0qxi.cloudfront.net/recipes-empty.json"
     
-    @Published var allRecipes: [Recipe]?
+    @Published var allRecipes: [Recipe] = []
+    @Published var filteredRecipes: [Recipe]? = nil
+    @Published var isLoading: Bool = true
     
-    private var lastRecipes: [Recipe]?
-    private var lastRecipeLoad: Date?
+    var recipesToShow: [Recipe] {
+        filteredRecipes ?? allRecipes
+    }
     
-    enum NetworkError: Error {
-        case invalidData
-        case invalidJSON
-        case invalidResponse
+    var cuisines: [CuisineCategory] {
+        let grouped = Dictionary(grouping: allRecipes, by: \.cuisine)
+        
+        let mapped = grouped.map { (key, recipes) in
+                CuisineCategory(
+                    name: key,
+                    count: recipes.count,
+                    previewImageURL: recipes.first?.photoUrlSmall // ✅ Pull image from first recipe
+                )
+            }
+        
+        let allCategory = CuisineCategory(name: "All Recipes", count: allRecipes.count, previewImageURL: nil)
+        
+        return [allCategory] + mapped.sorted { $0.name < $1.name }
     }
     
     init() {
-        getRecipes()
+        fetchAllRecipes()
     }
     
-    func clearRecipes() {
-        self.lastRecipes = nil
-        self.lastRecipeLoad = nil
-    }
-    
-    func getRecipes() {
+    func fetchAllRecipes() {
         self.runRequest(with: recipeDomain)
+    }
+    
+    func filter(by cuisine: String) {
+        filteredRecipes = allRecipes.filter { $0.cuisine == cuisine }
+    }
+    
+    func resetFilter() {
+        filteredRecipes = nil 
+    }
+    
+    func clearEverything() {
+        allRecipes = []
+        filteredRecipes = nil
     }
     
     func getMalformed() {
@@ -46,31 +66,30 @@ class RecipesService: ObservableObject {
         self.runRequest(with: emptyRecipes)
     }
     
-    func runRequest(with urlStr: String) {
-        if let url = URL(string: urlStr) {
-            let urlRequest = URLRequest(url: url)
-            
-            let session = URLSession.shared
-            let task = session.dataTask(with: urlRequest, completionHandler: { (data, response, error) -> Void in
-                if error != nil {
-                    print("getRecipes error: ", error?.localizedDescription ?? "")
-                } else if data != nil {
-                    print("getRecipes got data")
+    private func runRequest(with urlStr: String) {
+            guard let url = URL(string: urlStr) else { return }
+
+            let request = URLRequest(url: url)
+
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let data = data {
                     do {
-                        let result = try JSONDecoder().decode(RecipesResponse.self, from: data!)
-                        if let recipes = result.recipes {
-                            DispatchQueue.main.async {
-                                self.allRecipes = recipes
+                        let result = try JSONDecoder().decode(RecipesResponse.self, from: data)
+                        DispatchQueue.main.async {
+                            self.allRecipes = result.recipes ?? []
+                            self.filteredRecipes = nil
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                self.isLoading = false
                             }
+                            
                         }
                     } catch {
-                        print("getRecipes error: ", "JSON Error")
+                        print("JSON decoding error:", error)
                     }
+                } else if let error = error {
+                    print("Network error:", error)
                 }
-            })
-            task.resume()
+            }.resume()
         }
-    }
-    
-    
 }

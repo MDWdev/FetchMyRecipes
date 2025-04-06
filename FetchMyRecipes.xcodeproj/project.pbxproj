@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		960A2E2F2DA0DC0600B94725 /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E2E2DA0DC0600B94725 /* Dynamic.swift */; };
+		960A2E312DA2F23400B94725 /* RecipeCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E302DA2F23400B94725 /* RecipeCard.swift */; };
+		960A2E332DA2FADF00B94725 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E322DA2FADF00B94725 /* ImageLoader.swift */; };
+		960A2E352DA2FC7200B94725 /* CachedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E342DA2FC7200B94725 /* CachedImageView.swift */; };
+		960A2E392DA320F700B94725 /* CuisineRecipesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E382DA320F700B94725 /* CuisineRecipesView.swift */; };
+		960A2E3B2DA32CB000B94725 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 960A2E3A2DA32CB000B94725 /* LoadingOverlay.swift */; };
 		9632275E2DA0CBA600C8E618 /* FetchMyRecipesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9632275D2DA0CBA600C8E618 /* FetchMyRecipesApp.swift */; };
 		963227602DA0CBA700C8E618 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9632275F2DA0CBA700C8E618 /* ContentView.swift */; };
 		963227622DA0CBA900C8E618 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 963227612DA0CBA900C8E618 /* Assets.xcassets */; };
@@ -40,6 +45,11 @@
 
 /* Begin PBXFileReference section */
 		960A2E2E2DA0DC0600B94725 /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
+		960A2E302DA2F23400B94725 /* RecipeCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeCard.swift; sourceTree = "<group>"; };
+		960A2E322DA2FADF00B94725 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
+		960A2E342DA2FC7200B94725 /* CachedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedImageView.swift; sourceTree = "<group>"; };
+		960A2E382DA320F700B94725 /* CuisineRecipesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CuisineRecipesView.swift; sourceTree = "<group>"; };
+		960A2E3A2DA32CB000B94725 /* LoadingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
 		9632275A2DA0CBA600C8E618 /* FetchMyRecipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FetchMyRecipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9632275D2DA0CBA600C8E618 /* FetchMyRecipesApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMyRecipesApp.swift; sourceTree = "<group>"; };
 		9632275F2DA0CBA700C8E618 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -145,6 +155,10 @@
 			isa = PBXGroup;
 			children = (
 				9632275F2DA0CBA700C8E618 /* ContentView.swift */,
+				960A2E302DA2F23400B94725 /* RecipeCard.swift */,
+				960A2E342DA2FC7200B94725 /* CachedImageView.swift */,
+				960A2E382DA320F700B94725 /* CuisineRecipesView.swift */,
+				960A2E3A2DA32CB000B94725 /* LoadingOverlay.swift */,
 			);
 			path = VIEW;
 			sourceTree = "<group>";
@@ -163,6 +177,7 @@
 				9632278B2DA0CCFF00C8E618 /* RecipesService.swift */,
 				963227942DA0D78600C8E618 /* ImageCacheManager.swift */,
 				960A2E2E2DA0DC0600B94725 /* Dynamic.swift */,
+				960A2E322DA2FADF00B94725 /* ImageLoader.swift */,
 			);
 			path = SERVICES;
 			sourceTree = "<group>";
@@ -314,11 +329,16 @@
 			files = (
 				963227952DA0D78600C8E618 /* ImageCacheManager.swift in Sources */,
 				963227922DA0D0B400C8E618 /* String+Extended.swift in Sources */,
+				960A2E392DA320F700B94725 /* CuisineRecipesView.swift in Sources */,
+				960A2E352DA2FC7200B94725 /* CachedImageView.swift in Sources */,
 				963227892DA0CC8F00C8E618 /* Recipe.swift in Sources */,
 				963227602DA0CBA700C8E618 /* ContentView.swift in Sources */,
 				960A2E2F2DA0DC0600B94725 /* Dynamic.swift in Sources */,
+				960A2E332DA2FADF00B94725 /* ImageLoader.swift in Sources */,
+				960A2E312DA2F23400B94725 /* RecipeCard.swift in Sources */,
 				9632275E2DA0CBA600C8E618 /* FetchMyRecipesApp.swift in Sources */,
 				9632278C2DA0CCFF00C8E618 /* RecipesService.swift in Sources */,
+				960A2E3B2DA32CB000B94725 /* LoadingOverlay.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

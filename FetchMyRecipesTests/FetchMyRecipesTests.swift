@@ -92,6 +92,51 @@ final class FetchMyRecipesTests: XCTestCase {
         let decoded = try JSONDecoder().decode(RecipesResponse.self, from: missingKeyJSON)
         XCTAssertNil(decoded.recipes, "Expected recipes to be nil when key is missing")
     }
+    
+    func makeTestImage() -> UIImage {
+        let size = CGSize(width: 10, height: 10)
+        UIGraphicsBeginImageContext(size)
+        UIColor.red.setFill()
+        UIRectFill(CGRect(origin: .zero, size: size))
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
+
+    func testMemoryCacheStoresAndRetrievesImage() {
+        let testImage = makeTestImage()
+        let key = "memory-test-key"
+        
+        ImageCacheManager.shared.cacheImage(image: testImage, for: key)
+        
+        let expectation = XCTestExpectation(description: "Load from memory cache")
+        
+        ImageCacheManager.shared.getCachedImage(for: key) { result in
+            XCTAssertNotNil(result, "Image should be returned from memory cache")
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 3.0)
+    }
+    
+    func testDiskCacheStoresAndRetrievesImage() {
+        let testImage = makeTestImage()
+        let key = "disk-test-key"
+        
+        ImageCacheManager.shared.cacheImage(image: testImage, for: key)
+        
+        let memoryCache = Mirror(reflecting: ImageCacheManager.shared).children
+            .first(where: { $0.label == "memoryCache" })?.value as? NSCache<NSString, UIImage>
+        memoryCache?.removeAllObjects()
+        
+        let expectation = XCTestExpectation(description: "Load from disk cache")
+        
+        ImageCacheManager.shared.getCachedImage(for: key) { result in
+            XCTAssertNotNil(result, "Image should be loaded from disk cache")
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 3.0) //extended timeout because want the fun animation to show longer
+    }
 
 
     func testPerformanceExample() throws {

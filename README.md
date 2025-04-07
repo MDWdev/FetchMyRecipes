@@ -9,7 +9,7 @@ Focus: I focused on an attainable MVP that still felt like a rich user experienc
 
 Time: I spent approximately 6-8 hours on this project. The element that took me the longest was the loading overlay! I struggled to find a way for it to stay on the screen until the images were physically loaded and visible in each tile, without using a hacky solution.
 
-Trade-offs and Decisions: I could have spent a significant amount of time on making the animations smoother and more fun. I also wanted to be able to show more of the data inside the app code, but considering most of the data was only available inside the html of the source url--I thought that would be too much effort for the expected time spent. 
+Trade-offs and Decisions: I could have spent a significant amount of time on making the animations smoother and more fun. I also wanted to be able to show more of the data inside the app code, but considering most of the data was only available inside the html of the source url--I thought that would be too much effort for the expected time spent. I also would like to note that I did not "title" this project as I would a standalone app being sent to production. I imagined it as part of a larger project, as if it were being added inside of the Fetch ecosystem. 
 
 Weakest Part: There are a few things that I would have liked to spend more time to get right. One of them, still, is the loading overlay. The code still makes assumptions that I think could be avoided. It's also very possible that the test coverage could be better. I'm quite the novice when it comes to testing and I feel like things are missing.
 

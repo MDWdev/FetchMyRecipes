@@ -10,6 +10,7 @@ import Combine
 
 class ImageLoader: ObservableObject {
     @Published var image: UIImage?
+    @Published var didLoadImage = false
     
     private let urlString: String
     
@@ -21,7 +22,10 @@ class ImageLoader: ObservableObject {
     private func loadImage() {
         ImageCacheManager.shared.getCachedImage(for: urlString) { [weak self] cachedImage in
             if let cachedImage = cachedImage {
-                self?.image = cachedImage
+                DispatchQueue.main.async {
+                    self?.image = cachedImage
+                    self?.didLoadImage = true
+                }
             } else {
                 print("No cached image, downloading...")
                 self?.downloadImage()
@@ -39,7 +43,10 @@ class ImageLoader: ObservableObject {
             guard let data = data, let downloadedImage = UIImage(data: data) else { return }
             DispatchQueue.main.async {
                 ImageCacheManager.shared.cacheImage(image: downloadedImage, for: self.urlString)
-                self.image = downloadedImage
+                DispatchQueue.main.async {
+                    self.image = downloadedImage
+                    self.didLoadImage = true
+                }
             }
         }.resume()
     }

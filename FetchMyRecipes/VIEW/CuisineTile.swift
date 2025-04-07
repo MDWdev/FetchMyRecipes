@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct CuisineTile: View {
+    @EnvironmentObject var recipesService: RecipesService
     let cuisine: CuisineCategory
     
     @State private var appeared = false
@@ -15,7 +16,13 @@ struct CuisineTile: View {
     var body: some View {
         ZStack {
             if let imageUrl = cuisine.previewImageURL {
-                CachedImageView(url: imageUrl)
+                CachedImageView(url: imageUrl, onLoad: {
+                    recipesService.loadedPreviewImages += 1
+                    
+                    if recipesService.loadedPreviewImages >= recipesService.visibleTileTarget {
+                        recipesService.isLoading = false
+                    }
+                })
                     .scaledToFill()
                     .frame(height: 160)
                     .clipped()

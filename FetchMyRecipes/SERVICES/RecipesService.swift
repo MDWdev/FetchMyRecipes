@@ -16,6 +16,8 @@ class RecipesService: ObservableObject {
     @Published var allRecipes: [Recipe] = []
     @Published var filteredRecipes: [Recipe]? = nil
     @Published var isLoading: Bool = true
+    @Published var loadedPreviewImages: Int = 0
+    @Published var visibleTileTarget: Int = 0
     
     var recipesToShow: [Recipe] {
         filteredRecipes ?? allRecipes

@@ -10,10 +10,12 @@ import SwiftUI
 struct CachedImageView: View {
     @StateObject private var loader: ImageLoader
     private let placeholder: Image
+    var onLoad: (() -> Void)?
     
-    init(url: String, placeholder: Image = Image(systemName: "photo")) {
+    init(url: String, placeholder: Image = Image(systemName: "photo"), onLoad: (() -> Void)? = nil) {
         _loader = StateObject(wrappedValue: ImageLoader(urlString: url))
         self.placeholder = placeholder
+        self.onLoad = onLoad
     }
     
     var body: some View {
@@ -27,6 +29,11 @@ struct CachedImageView: View {
                     .resizable()
                     .scaledToFit()
                     .foregroundColor(.gray.opacity(0.5))
+            }
+        }
+        .onChange(of: loader.didLoadImage) { loaded in
+            if loaded {
+                onLoad?()
             }
         }
     }

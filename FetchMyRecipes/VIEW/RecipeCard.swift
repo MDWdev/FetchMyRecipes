@@ -8,18 +8,34 @@
 import SwiftUI
 
 struct RecipeCard: View {
-    var recipe: Recipe
+    let recipe: Recipe
     
     var body: some View {
-        HStack {
-            if let url = recipe.photoUrlSmall {
-                CachedImageView(url: url)
-                    .frame(width: 80, height: 80)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+        HStack(alignment: .top, spacing: 12) {
+            CachedImageView(url: recipe.photoUrlSmall ?? "")
+                .frame(width: 80, height: 80)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+                .shadow(radius: 2)
+            
+            VStack(alignment: .leading, spacing: 6) {
+                Text(recipe.name)
+                    .font(.headline)
+                    .foregroundColor(.primary)
+                
+                Text(recipe.cuisine)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
             }
             
-            Text(recipe.name)
+            Spacer()
         }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(.systemBackground))
+                .shadow(color: Color.black.opacity(0.05), radius: 4, x: 0, y:2)
+        )
+        .padding(.horizontal)
     }
 }
 

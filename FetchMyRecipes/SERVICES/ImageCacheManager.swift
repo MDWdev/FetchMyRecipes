@@ -86,8 +86,6 @@ class ImageCacheManager {
     }
     
     func getCachedImage(for url: String, completion: @escaping (UIImage?) -> Void) {
-        print("📦 Checking cache for \(url)")
-
         loadImage(for: url, completion: completion)
     }
 }

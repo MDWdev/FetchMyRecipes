@@ -18,6 +18,7 @@ class RecipesService: ObservableObject {
     @Published var isLoading: Bool = true
     @Published var loadedPreviewImages: Int = 0
     @Published var visibleTileTarget: Int = 0
+    @Published var errorMessage: String?
     
     var recipesToShow: [Recipe] {
         filteredRecipes ?? allRecipes
@@ -41,6 +42,8 @@ class RecipesService: ObservableObject {
     
     init() {
         fetchAllRecipes()
+//        fetchMalformed()
+//        fetchEmpty()
     }
     
     func fetchAllRecipes() {
@@ -48,44 +51,87 @@ class RecipesService: ObservableObject {
     }
     
     func filter(by cuisine: String) {
-        filteredRecipes = allRecipes.filter { $0.cuisine == cuisine }
+        DispatchQueue.main.async {
+            self.filteredRecipes = self.allRecipes.filter { $0.cuisine == cuisine }
+        }
     }
     
     func resetFilter() {
-        filteredRecipes = nil 
+        DispatchQueue.main.async {
+            self.filteredRecipes = nil
+        }
     }
     
     func clearEverything() {
-        allRecipes = []
-        filteredRecipes = nil
+        DispatchQueue.main.async {
+            self.allRecipes = []
+            self.filteredRecipes = nil
+        }
     }
     
-    func getMalformed() {
+    func fetchMalformed() {
         self.runRequest(with: malformedRecipes)
     }
     
-    func getEmpty() {
+    func fetchEmpty() {
         self.runRequest(with: emptyRecipes)
     }
     
-    private func runRequest(with urlStr: String) {
-            guard let url = URL(string: urlStr) else { return }
+    func refreshAllRecipes() async {
+        DispatchQueue.main.async {
+            self.errorMessage = nil
+            self.isLoading = true
+            self.loadedPreviewImages = 0
+            self.visibleTileTarget = 0
+        }
+        
+        await withCheckedContinuation { continuation in
+            runRequest(with: recipeDomain) {
+                DispatchQueue.main.async {
+                    self.isLoading = false
+                }
+                continuation.resume()
+            }
+        }
+    }
+    
+    private func runRequest(with urlStr: String, completion: (() -> Void)? = nil) {
+        guard let url = URL(string: urlStr) else {
+            completion?()
+            return
+        }
 
             let request = URLRequest(url: url)
 
             URLSession.shared.dataTask(with: request) { data, response, error in
+                defer { completion? () }
                 if let data = data {
                     do {
                         let result = try JSONDecoder().decode(RecipesResponse.self, from: data)
                         DispatchQueue.main.async {
-                            self.allRecipes = result.recipes ?? []
-                            self.filteredRecipes = nil
+                            if let recipes = result.recipes, !recipes.isEmpty, recipes.count > 0 {
+                                self.allRecipes = recipes
+                                self.filteredRecipes = nil
+                            } else {
+                                self.clearEverything()
+                                self.isLoading = false
+                            }
                         }
                     } catch {
                         print("JSON decoding error:", error)
+                        DispatchQueue.main.async {
+                            self.clearEverything()
+                            self.isLoading = false
+                            self.errorMessage = "Oops! We couldn't load recipes. Please try again later."
+                        }
                     }
                 } else if let error = error {
                     print("Network error:", error)
+                    DispatchQueue.main.async {
+                        self.clearEverything()
+                        self.isLoading = false
+                        self.errorMessage = "Oops! There was a problem with the network. Please try again later."
+                    }
                 }
             }.resume()
         }

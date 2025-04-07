@@ -27,7 +27,6 @@ class ImageLoader: ObservableObject {
                     self?.didLoadImage = true
                 }
             } else {
-                print("No cached image, downloading...")
                 self?.downloadImage()
             }
         }
@@ -35,9 +34,6 @@ class ImageLoader: ObservableObject {
     
     private func downloadImage() {
         guard let url = URL(string: urlString) else { return }
-        
-        print("📥 Downloading image from \(urlString)")
-
         
         URLSession.shared.dataTask(with: url) {data, _, _ in
             guard let data = data, let downloadedImage = UIImage(data: data) else { return }
